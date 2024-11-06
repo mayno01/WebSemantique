@@ -34,11 +34,13 @@ public class UserController {
         String password = credentials.get("password");
         boolean loginSuccess = userService.loginUser(username, password);
         if (loginSuccess) {
-            return ResponseEntity.ok("Login successful!");
+            String token = userService.generateToken(username);
+            return ResponseEntity.ok( token);
         } else {
             return ResponseEntity.status(401).body("Invalid username or password.");
         }
     }
+
 
     // Delete user account
     @DeleteMapping("/delete")

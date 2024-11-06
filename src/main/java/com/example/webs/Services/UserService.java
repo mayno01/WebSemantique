@@ -1,19 +1,22 @@
 package com.example.webs.Services;
 
-
+import io.jsonwebtoken.security.Keys;
 import com.example.webs.Enums.UserRole;
 import org.apache.jena.query.*;
 import org.apache.jena.rdf.model.*;
 import org.apache.jena.util.FileManager;
 import org.apache.jena.vocabulary.RDF;
 import org.springframework.stereotype.Component;
-
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.util.*;
-
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 @Component
 public class UserService {
+    private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
     private static final String RDF_FILE_PATH = "D:\\Downloads\\webSem.rdf";
     private Model model;
 
@@ -30,6 +33,7 @@ public class UserService {
 
     // Register a new user
     public void registerUser(String username, String password, UserRole role) {
+        String hashedPassword = passwordEncoder.encode(password);
         if (model == null) {
             loadRDF();
         }
@@ -40,7 +44,7 @@ public class UserService {
 
         userResource.addProperty(RDF.type, model.getResource("http://www.semanticweb.org/ahinfo/ontologies/2024/9/untitled-ontology-3#User"));
         userResource.addProperty(model.getProperty("http://www.semanticweb.org/ahinfo/ontologies/2024/9/untitled-ontology-3#username"), username);
-        userResource.addProperty(model.getProperty("http://www.semanticweb.org/ahinfo/ontologies/2024/9/untitled-ontology-3#password"), password);
+        userResource.addProperty(model.getProperty("http://www.semanticweb.org/ahinfo/ontologies/2024/9/untitled-ontology-3#password"), hashedPassword);
         userResource.addProperty(model.getProperty("http://www.semanticweb.org/ahinfo/ontologies/2024/9/untitled-ontology-3#role"), role.name());
 
         saveRDF();
@@ -53,25 +57,31 @@ public class UserService {
         }
 
         String queryString = "PREFIX ontology: <http://www.semanticweb.org/ahinfo/ontologies/2024/9/untitled-ontology-3#> "
-                + "SELECT ?user "
+                + "SELECT ?user ?storedPassword "
                 + "WHERE { "
                 + "  ?user a ontology:User . "
                 + "  ?user ontology:username ?username . "
-                + "  ?user ontology:password ?password . "
-                + "  FILTER(?username = \"" + username + "\" && ?password = \"" + password + "\") "
+                + "  ?user ontology:password ?storedPassword . "
+                + "  FILTER(?username = \"" + username + "\") "
                 + "}";
 
         Query query = QueryFactory.create(queryString);
 
         try (QueryExecution qexec = QueryExecutionFactory.create(query, model)) {
             ResultSet results = qexec.execSelect();
-            return results.hasNext();
+            if (results.hasNext()) {
+                QuerySolution solution = results.nextSolution();
+                String storedPassword = solution.getLiteral("storedPassword").getString();
+
+                BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+                // Compare the entered password with the hashed password
+                return passwordEncoder.matches(password, storedPassword);
+            }
         } catch (Exception e) {
             e.printStackTrace();
-            return false;
         }
+        return false;
     }
-
     // Delete a user account by username
     public boolean deleteUser(String username) {
         if (model == null) {
@@ -181,4 +191,16 @@ public class UserService {
         }
         return users;
     }
+
+    public String generateToken(String username) {
+        String SECRET_KEY = "WebSemantique123123AABFAC9985254AABBBWebSemantique123123AABFAC9985254AABBB";
+
+        long expirationTime = 1000 * 60 * 60 * 24;
+        return Jwts.builder()
+                .setSubject(username)
+                .setExpiration(new Date(System.currentTimeMillis() + expirationTime))
+                .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
+                .compact();
+    }
+
 }

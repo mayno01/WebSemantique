@@ -16,7 +16,7 @@ import java.util.Map;
 @Component
 public class EventService {
 
-    private static final String RDF_FILE_PATH = "D:\\Downloads\\websem.rdf";
+    private static final String RDF_FILE_PATH = "D:\\Downloads\\webSem.rdf";
     private Model model;
 
     public Model loadRDF() {
