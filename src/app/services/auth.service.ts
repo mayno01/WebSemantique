@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { jwtDecode } from "jwt-decode";
 
 @Injectable({
   providedIn: 'root'
@@ -20,14 +21,12 @@ export class AuthService {
     return this.http.post(`${this.apiUrl}/login`, payload, { responseType: 'text' });
   }
 
-  
   setToken(token: string): void {
     const expires = new Date();
     expires.setSeconds(expires.getSeconds() + 3600); 
     document.cookie = `token=${token};expires=${expires.toUTCString()};path=/`;
   }
 
-  
   getToken(): string | null {
     const token = document.cookie
       .split('; ')
@@ -36,15 +35,40 @@ export class AuthService {
     return token || null;
   }
 
-
   removeToken(): void {
     document.cookie = 'token=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/';
   }
 
 
+  getAllUsers(): Observable<any> {
+    const token = this.getToken();
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+
+    return this.http.get(`${this.apiUrl}/all`, { headers });
+  }
+
   
-getAllUsers(): Observable<any> {
-    return this.http.get(`${this.apiUrl}/all`);
+  getUserById(id: string): Observable<any> {
+    const token = this.getToken();
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+  
+    return this.http.get(`${this.apiUrl}/${id}`, { headers });
   }
   
+
+  getUserIdFromToken(): string | null {
+    const token = this.getToken();
+    if (token) {
+      try {
+        const decoded: any = jwtDecode(token);  
+        return decoded.userId;  
+      } catch (error) {
+        console.error("Failed to decode token:", error);
+        return null;
+      }
+    }
+    return null;
+  }
+  
+
 }
