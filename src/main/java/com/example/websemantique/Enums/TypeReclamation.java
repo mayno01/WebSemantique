@@ -1,0 +1,9 @@
+package com.example.websemantique.Enums;
+
+public enum TypeReclamation {
+    ERREURS_DE_COMMANDE,
+    PROBLEMES_DE_QUALITE_DES_PLANTES,
+    PROBLEMES_LIES_AUX_PROMOTIONS,
+    PRODUITS_DE_FECTUEUX,
+    SERVICE_CLIENTELE_INSATISFAISANT
+}
