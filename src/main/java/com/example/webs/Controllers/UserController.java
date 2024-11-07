@@ -23,19 +23,41 @@ public class UserController {
         String username = (String) user.get("username");
         String password = (String) user.get("password");
         UserRole role = UserRole.valueOf((String) user.get("role"));
+
+        if (username == null || username.trim().isEmpty() || password == null || password.trim().isEmpty()) {
+            return ResponseEntity.status(400).body("Username and password cannot be empty.");
+        }
+
+        if (username.length() < 4) {
+            return ResponseEntity.status(400).body("Username must be at least 4 characters long.");
+        }
+
+        if (password.length() < 6) {
+            return ResponseEntity.status(400).body("Password must be at least 6 characters long.");
+        }
+
         userService.registerUser(username, password, role);
         return ResponseEntity.ok("User registered successfully!");
     }
 
+
+
+    // Login user
     // Login user
     @PostMapping("/login")
     public ResponseEntity<String> loginUser(@RequestBody Map<String, String> credentials) {
         String username = credentials.get("username");
         String password = credentials.get("password");
+
+        // Check if username or password is empty
+        if (username == null || username.trim().isEmpty() || password == null || password.trim().isEmpty()) {
+            return ResponseEntity.status(400).body("Username and password cannot be empty.");
+        }
+
         boolean loginSuccess = userService.loginUser(username, password);
         if (loginSuccess) {
             String token = userService.generateToken(username);
-            return ResponseEntity.ok( token);
+            return ResponseEntity.ok(token);
         } else {
             return ResponseEntity.status(401).body("Invalid username or password.");
         }
