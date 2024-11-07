@@ -100,15 +100,26 @@ public class EquipeService {
         try (QueryExecution qexec = QueryExecutionFactory.create(query, model)) {
             ResultSet results = qexec.execSelect();
             StringBuilder resultJson = new StringBuilder("[");
+
+            // Flag to check if any results are found
+            boolean hasResults = false;
+
             while (results.hasNext()) {
+                hasResults = true; // Set flag to true if there's at least one result
                 QuerySolution soln = results.nextSolution();
                 String idURL = soln.getResource("Equipe").toString();
                 String id = idURL.split("#")[1];
                 String type = soln.getLiteral("Equipe_type").getString();
                 resultJson.append("{\"id\":\"").append(id).append("\", \"type\":\"").append(type).append("\"},");
             }
-            resultJson.deleteCharAt(resultJson.length() - 1).append("]");
-            return resultJson.toString();
+
+            // Only delete the last comma if results were added
+            if (hasResults) {
+                resultJson.deleteCharAt(resultJson.length() - 1);
+            }
+
+            resultJson.append("]");
+            return resultJson.toString(); // Returns "[]" if no results
         }
     }
 
