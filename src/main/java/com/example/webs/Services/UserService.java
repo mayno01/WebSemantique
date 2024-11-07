@@ -17,7 +17,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 @Component
 public class UserService {
     private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-    private static final String RDF_FILE_PATH = "D:\\Downloads\\webSem.rdf";
+    private static final String RDF_FILE_PATH = "C:/Users/MOLKA/Downloads/webSem.rdf";
     private Model model;
 
     // Load RDF model from file
