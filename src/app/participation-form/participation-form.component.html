@@ -1,0 +1,87 @@
+<div class="container mt-5">
+  <div class="card">
+    <div class="card-header text-center bg-primary text-white">
+      <h3>Participate in Event</h3>
+    </div>
+    <div class="card-body">
+      
+      <!-- Success and Error Messages -->
+      <div *ngIf="showSuccessMessage" class="alert alert-success" role="alert">
+        {{ successMessage }}
+      </div>
+      <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
+        {{ errorMessage }}
+      </div>
+
+      <!-- Event Name Section -->
+      <div class="mb-4">
+        <div class="text-center">
+          <h4 class="display-4">{{ eventData?.Name }}</h4>
+          <p class="text-muted">{{ eventData?.Description }}</p>
+        </div>
+      </div>
+
+      <!-- Participation Form -->
+      <form [formGroup]="participationForm" (ngSubmit)="onSubmit()">
+        
+        <!-- Participant Name -->
+        <div class="mb-3">
+          <label for="participantName" class="form-label">Participant Name</label>
+          <input 
+            id="participantName" 
+            type="text" 
+            class="form-control" 
+            formControlName="participantName" 
+            required
+          />
+          <div *ngIf="participationForm.get('participantName')?.invalid && participationForm.get('participantName')?.touched" class="text-danger">
+            Participant Name is required.
+          </div>
+        </div>
+
+        <!-- Event Name (Read-only) -->
+        <div class="mb-3">
+          <label for="eventName" class="form-label">Event Name</label>
+          <input 
+            id="eventName" 
+            type="text" 
+            class="form-control" 
+            formControlName="eventName" 
+            [value]="eventData?.Name" 
+            readonly
+          />
+        </div>
+
+        <!-- Participation Type (Select Dropdown for Enum Values) -->
+        <div class="mb-3">
+          <label for="participationType" class="form-label">Participation Type</label>
+          <select 
+            id="participationType" 
+            class="form-select" 
+            formControlName="participationType" 
+            required
+          >
+            <option value="">Select Participation Type</option>
+            <option value="PREMIUM">Premium</option>
+            <option value="SIMPLE">Simple</option>
+          </select>
+          <div *ngIf="participationForm.get('participationType')?.invalid && participationForm.get('participationType')?.touched" class="text-danger">
+            Participation Type is required.
+          </div>
+        </div>
+
+        <!-- Hidden Event ID -->
+        <input 
+          type="hidden" 
+          formControlName="eventId" 
+          [value]="eventData?.id" 
+        />
+
+        <!-- Submit Button -->
+        <button type="submit" class="btn btn-primary w-100" [disabled]="participationForm.invalid">
+          Submit
+        </button>
+      </form>
+    </div>
+  </div>
+</div>

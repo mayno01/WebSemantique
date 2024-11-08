@@ -17,9 +17,9 @@ export class EditUserComponent implements OnInit {
   userId!: string;
   groupTypes = ['VIP', 'PREMIUM', 'BASIC']; 
   groups = [
-    { id: '937488306806', name: 'VIP' },
-    { id: '566458832597', name: 'PREMIUM' },
-    { id: '901366217470', name: 'BASIC' }
+    { id: '334658713312', name: 'VIP' },
+    { id: '415103205182', name: 'PREMIUM' },
+    { id: '152033818458', name: 'BASIC' }
 
 
   ];

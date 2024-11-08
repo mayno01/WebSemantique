@@ -1,0 +1,87 @@
+/* Event Details Container */
+.event-details {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    max-width: 800px;
+    margin: 20px auto;
+    font-family: 'Arial', sans-serif;
+  }
+  
+  /* Header */
+  .event-header {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .event-header h1 {
+    font-size: 2.5rem;
+    color: #2c3e50;
+    font-weight: 600;
+  }
+  
+  .event-header .event-type {
+    font-size: 1.2rem;
+    color: #7f8c8d;
+    font-weight: 500;
+    margin-top: 10px;
+  }
+  
+  /* Description Section */
+  .event-description {
+    margin-bottom: 20px;
+  }
+  
+  .event-description h3 {
+    font-size: 1.5rem;
+    color: #34495e;
+    margin-bottom: 10px;
+  }
+  
+  .event-description p {
+    font-size: 1rem;
+    color: #2c3e50;
+    line-height: 1.6;
+  }
+  
+  /* Event Info */
+  .event-info {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .event-info .event-date {
+    font-size: 1rem;
+    color: #16a085;
+    font-weight: 600;
+  }
+  
+  /* Loading Message */
+  .loading-message {
+    text-align: center;
+    font-size: 1.2rem;
+    color: #95a5a6;
+    padding: 20px;
+  }
+  /* Back Button Styling */
+.back-button {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;  /* Add space between event details and button */
+    display: inline-block;
+  }
+  
+  .back-button:hover {
+    background-color: #2980b9;
+  }
+  
+  .back-button:focus {
+    outline: none;
+  }
+  

@@ -1,0 +1,132 @@
+/* Container Styles */
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  /* Header Section */
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  
+  .event-title {
+    font-size: 2em;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .add-event-button {
+    padding: 10px 15px;
+    font-size: 1em;
+    color: white;
+    background-color: #28a745;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .add-event-button:hover {
+    background-color: #218838;
+  }
+  
+  /* Error Message */
+  .error-message {
+    color: #dc3545;
+    font-weight: bold;
+    text-align: center;
+    margin: 10px 0;
+  }
+  
+  /* Event Cards */
+  .events-list {
+    display: grid;
+    gap: 15px;
+  }
+  
+  .event-card {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: box-shadow 0.3s ease;
+  }
+  
+  .event-card:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .event-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .event-header h3 {
+    font-size: 1.5em;
+    color: #333;
+    margin: 0;
+  }
+  
+  .event-date {
+    color: #6c757d;
+    font-size: 0.9em;
+    font-weight: bold;
+  }
+  
+  .event-description {
+    color: #555;
+    margin: 10px 0;
+  }
+  
+  .event-type {
+    color: #007bff;
+    font-weight: bold;
+    margin-bottom: 15px;
+  }
+  
+  /* Event Action Buttons */
+  .event-actions {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .btn {
+    padding: 8px 15px;
+    border-radius: 5px;
+    font-size: 0.9em;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .update-btn {
+    background-color: #ffc107;
+  }
+  
+  .update-btn:hover {
+    background-color: #e0a800;
+  }
+  
+  .delete-btn {
+    background-color: #dc3545;
+  }
+  
+  .delete-btn:hover {
+    background-color: #c82333;
+  }
+  
+  /* No Events Message */
+  .no-events-message {
+    text-align: center;
+    color: #888;
+    font-size: 1.1em;
+    margin-top: 20px;
+  }
+  

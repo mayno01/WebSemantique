@@ -25,6 +25,7 @@ export class AuthService {
     const expires = new Date();
     expires.setSeconds(expires.getSeconds() + 3600); 
     document.cookie = `token=${token};expires=${expires.toUTCString()};path=/`;
+    
   }
 
   getToken(): string | null {
