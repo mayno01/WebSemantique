@@ -19,7 +19,7 @@ export class ReservationService {
     });
   }
 
-  // Add a new reservation
+  
   addReservation(reservationData: {
     Reservation_id: string;
     Reservation_type: string;
