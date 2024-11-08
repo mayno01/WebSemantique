@@ -1,0 +1,75 @@
+/* Body Wrapper */
+.body-wrapper {
+    background-color: #f4f6f9;
+    padding: 20px 0;
+  }
+  
+  /* Container */
+  .container {
+    max-width: 700px;
+  }
+  
+  /* Event Participation Card */
+  .event-participation {
+    border-radius: 10px;
+    background-color: #ffffff;
+  }
+  
+  /* Event Title */
+  .event-title {
+    font-size: 1.6em;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  /* Alert Messages */
+  .alert {
+    font-size: 0.9em;
+    padding: 10px;
+    margin-bottom: 15px;
+  }
+  
+  /* Participant List */
+  .participant-list .list-group-item {
+    border: none;
+    border-bottom: 1px solid #e0e0e0;
+    padding: 12px 0;
+    font-size: 1em;
+  }
+  
+  .participant-info {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .participant-name {
+    color: #333;
+  }
+  
+  .participation-type {
+    color: #777;
+    font-size: 0.85em;
+  }
+  
+  /* Buttons */
+  .btn-outline-danger {
+    padding: 5px 10px;
+    font-size: 0.9em;
+  }
+  
+  .btn-secondary {
+    background-color: #6c757d;
+    border: none;
+  }
+  
+  .btn-secondary:hover {
+    background-color: #5a6268;
+  }
+  
+  /* No Participations Message */
+  .no-participations {
+    font-size: 1em;
+    color: #888;
+    margin-top: 20px;
+  }
+  
