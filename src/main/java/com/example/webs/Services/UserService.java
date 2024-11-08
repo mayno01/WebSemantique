@@ -48,7 +48,7 @@ public class UserService {
         userResource.addProperty(model.getProperty("http://www.semanticweb.org/ahinfo/ontologies/2024/9/untitled-ontology-3#role"), role.name());
 
         // Set an empty GroupId for the newly registered user
-        userResource.addProperty(model.getProperty("http://www.semanticweb.org/ahinfo/ontologies/2024/9/untitled-ontology-3#groupId"), "901366217470");
+        userResource.addProperty(model.getProperty("http://www.semanticweb.org/ahinfo/ontologies/2024/9/untitled-ontology-3#groupId"), "152033818458");
 
         saveRDF();
     }
