@@ -127,6 +127,37 @@ public class BlogService {
             saveRDF();
         }
     }
+    public String getBlogById(String id) {
+        if (model == null) {
+            loadRDF();
+        }
+
+        String namespace = "http://www.semanticweb.org/ahinfo/ontologies/2024/9/untitled-ontology-3#";
+        Resource blogResource = model.getResource(namespace + id);
+
+        if (blogResource != null && blogResource.hasProperty(RDF.type, model.getResource(namespace + "Blog"))) {
+            JSONObject blogObject = new JSONObject();
+            blogObject.put("id", id);
+
+            if (blogResource.hasProperty(model.getProperty(namespace + "hasTitle"))) {
+                blogObject.put("title", blogResource.getProperty(model.getProperty(namespace + "hasTitle")).getString());
+            }
+            if (blogResource.hasProperty(model.getProperty(namespace + "hasDate"))) {
+                blogObject.put("date", blogResource.getProperty(model.getProperty(namespace + "hasDate")).getString());
+            }
+            if (blogResource.hasProperty(model.getProperty(namespace + "hasContent"))) {
+                blogObject.put("content", blogResource.getProperty(model.getProperty(namespace + "hasContent")).getString());
+            }
+            if (blogResource.hasProperty(model.getProperty(namespace + "hasType"))) {
+                blogObject.put("type", blogResource.getProperty(model.getProperty(namespace + "hasType")).getString());
+            }
+
+            return blogObject.toString();
+        } else {
+            throw new IllegalArgumentException("Blog with ID " + id + " not found.");
+        }
+    }
+
 
     private void saveRDF() {
         try (FileOutputStream out = new FileOutputStream(RDF_FILE_PATH)) {

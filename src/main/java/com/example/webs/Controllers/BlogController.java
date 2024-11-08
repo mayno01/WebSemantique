@@ -24,6 +24,16 @@ public class BlogController {
         return ResponseEntity.ok(result);
     }
 
+    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> getBlogById(@PathVariable String id) {
+        try {
+            String blog = blogService.getBlogById(id);
+            return ResponseEntity.ok(blog);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(404).body(e.getMessage());
+        }
+    }
+
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> addBlog(@RequestBody Map<String, Object> newBlogData) {
         String id = generateRandomString(12);
