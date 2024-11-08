@@ -115,7 +115,12 @@ public class ReservationService {
         try (QueryExecution qexec = QueryExecutionFactory.create(query, model)) {
             ResultSet results = qexec.execSelect();
             StringBuilder resultJson = new StringBuilder("[");
+
+            // Flag to check if any results are found
+            boolean hasResults = false;
+
             while (results.hasNext()) {
+                hasResults = true; // Set flag to true if there's at least one result
                 QuerySolution soln = results.nextSolution();
                 String idURL = soln.getResource("Reservation").toString();
                 String id = idURL.split("#")[1];
@@ -123,6 +128,7 @@ public class ReservationService {
                 String date = soln.getLiteral("Reservation_date").getString();
                 String description = soln.getLiteral("Reservation_description").getString();
                 String feedback = soln.getLiteral("Reservation_feedback").getString();
+
                 resultJson.append("{\"id\":\"").append(id)
                         .append("\", \"type\":\"").append(type)
                         .append("\", \"date\":\"").append(date)
@@ -130,10 +136,17 @@ public class ReservationService {
                         .append("\", \"feedback\":\"").append(feedback)
                         .append("\"},");
             }
-            resultJson.deleteCharAt(resultJson.length() - 1).append("]");
-            return resultJson.toString();
+
+            // Only delete the last comma if results were added
+            if (hasResults) {
+                resultJson.deleteCharAt(resultJson.length() - 1);
+            }
+
+            resultJson.append("]");
+            return resultJson.toString(); // Returns "[]" if no results
         }
     }
+
 
     private void saveRDF() {
         try (FileOutputStream out = new FileOutputStream(RDF_FILE_PATH)) {
