@@ -1,5 +1,6 @@
 package com.example.webs.Controllers;
 
+import com.example.webs.Enums.BlogType;
 import com.example.webs.Services.BlogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -17,44 +18,51 @@ public class BlogController {
     @Autowired
     private BlogService blogService;
 
-    // Endpoint to retrieve all blogs in JSON format
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> getAllBlogs() {
         String result = blogService.getBlogs();
         return ResponseEntity.ok(result);
     }
 
-    // Endpoint to add a new blog
+    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> getBlogById(@PathVariable String id) {
+        try {
+            String blog = blogService.getBlogById(id);
+            return ResponseEntity.ok(blog);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(404).body(e.getMessage());
+        }
+    }
+
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> addBlog(@RequestBody Map<String, Object> newBlogData) {
         String id = generateRandomString(12);
-        String blogName = (String) newBlogData.get("Name");
-        String blogDescription = (String) newBlogData.get("Description");
-        String addedDate = (String) newBlogData.get("Added_Date");
+        String title = (String) newBlogData.get("title");
+        String content = (String) newBlogData.get("content");
+        String date = (String) newBlogData.get("date");
+        BlogType type = BlogType.valueOf((String) newBlogData.get("type"));
 
-        blogService.addBlog(id, blogName, blogDescription, addedDate);
+        blogService.addBlog(id, title, content, date, type);
         return ResponseEntity.ok("Blog added successfully!");
     }
 
-    // Endpoint to update an existing blog
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> updateBlog(@PathVariable String id, @RequestBody Map<String, Object> updatedBlogData) {
-        String blogName = (String) updatedBlogData.get("Name");
-        String blogDescription = (String) updatedBlogData.get("Description");
-        String addedDate = (String) updatedBlogData.get("Added_Date");
+        String title = (String) updatedBlogData.get("title");
+        String content = (String) updatedBlogData.get("content");
+        String date = (String) updatedBlogData.get("date");
+        BlogType type = BlogType.valueOf((String) updatedBlogData.get("type"));
 
-        blogService.updateBlog(id, blogName, blogDescription, addedDate);
+        blogService.updateBlog(id, title, content, date, type);
         return ResponseEntity.ok("Blog updated successfully!");
     }
 
-    // Endpoint to delete a blog
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteBlog(@PathVariable String id) {
         blogService.deleteBlog(id);
         return ResponseEntity.ok("Blog deleted successfully!");
     }
 
-    // Helper method to generate a random string for blog IDs
     private static final String CHARACTERS = "0123456789";
     private static final Random RANDOM = new Random();
 

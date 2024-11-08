@@ -2,6 +2,7 @@ package com.example.webs.Controllers;
 import com.example.webs.Enums.UserRole;
 import com.example.webs.Services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -40,10 +41,23 @@ public class UserController {
         return ResponseEntity.ok("User registered successfully!");
     }
 
+    // Update GroupId for a user
+    @PutMapping("/updateGroupId/{userId}")
+    public ResponseEntity<String> updateUserGroupId(@PathVariable String userId, @RequestBody Map<String, String> groupIdData) {
+        String groupId = groupIdData.get("groupId");
 
+        if (groupId == null || groupId.trim().isEmpty()) {
+            return ResponseEntity.status(400).body("GroupId cannot be empty.");
+        }
 
-    // Login user
-    // Login user
+        boolean success = userService.updateUserGroupId(userId, groupId);
+        if (success) {
+            return ResponseEntity.ok("GroupId updated successfully!");
+        } else {
+            return ResponseEntity.status(404).body("User not found.");
+        }
+    }
+
     @PostMapping("/login")
     public ResponseEntity<String> loginUser(@RequestBody Map<String, String> credentials) {
         String username = credentials.get("username");
@@ -54,14 +68,17 @@ public class UserController {
             return ResponseEntity.status(400).body("Username and password cannot be empty.");
         }
 
-        boolean loginSuccess = userService.loginUser(username, password);
-        if (loginSuccess) {
-            String token = userService.generateToken(username);
+        Optional<String> userIdOpt = userService.loginUser(username, password);
+        if (userIdOpt.isPresent()) {
+            String userId = userIdOpt.get();  // Retrieve userId
+            String token = userService.generateToken(username, userId); // Generate token with userId
+
             return ResponseEntity.ok(token);
         } else {
             return ResponseEntity.status(401).body("Invalid username or password.");
         }
     }
+
 
 
     // Delete user account
@@ -81,6 +98,17 @@ public class UserController {
         return userData
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.status(404).body(null));
+    }
+    @PutMapping("/{userId}/group")
+    public ResponseEntity<?> updateUserGroup(@PathVariable String userId, @RequestBody Map<String, String> payload) {
+        String groupId = payload.get("groupId");
+        boolean isUpdated = userService.updateUserGroupId(userId, groupId);
+
+        if (isUpdated) {
+            return ResponseEntity.ok("Group updated successfully");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+        }
     }
 
 

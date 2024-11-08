@@ -31,7 +31,7 @@ public class UserService {
         return model;
     }
 
-    // Register a new user
+
     public void registerUser(String username, String password, UserRole role) {
         String hashedPassword = passwordEncoder.encode(password);
         if (model == null) {
@@ -47,11 +47,33 @@ public class UserService {
         userResource.addProperty(model.getProperty("http://www.semanticweb.org/ahinfo/ontologies/2024/9/untitled-ontology-3#password"), hashedPassword);
         userResource.addProperty(model.getProperty("http://www.semanticweb.org/ahinfo/ontologies/2024/9/untitled-ontology-3#role"), role.name());
 
+        // Set an empty GroupId for the newly registered user
+        userResource.addProperty(model.getProperty("http://www.semanticweb.org/ahinfo/ontologies/2024/9/untitled-ontology-3#groupId"), "901366217470");
+
         saveRDF();
     }
+    // Method to update GroupId after registration
+    public boolean updateUserGroupId(String userId, String groupId) {
+        if (model == null) {
+            loadRDF();
+        }
+
+        String userUri = "http://www.semanticweb.org/ahinfo/ontologies/2024/9/untitled-ontology-3#" + userId;
+        Resource userResource = model.getResource(userUri);
+
+        if (userResource != null) {
+            userResource.removeAll(model.getProperty("http://www.semanticweb.org/ahinfo/ontologies/2024/9/untitled-ontology-3#groupId"));
+            userResource.addProperty(model.getProperty("http://www.semanticweb.org/ahinfo/ontologies/2024/9/untitled-ontology-3#groupId"), groupId); // Use ID here
+            saveRDF();
+            return true;
+        }
+        return false;
+    }
+
+
 
     // Login user by validating username and password
-    public boolean loginUser(String username, String password) {
+    public Optional<String> loginUser(String username, String password) {
         if (model == null) {
             loadRDF();
         }
@@ -72,16 +94,18 @@ public class UserService {
             if (results.hasNext()) {
                 QuerySolution solution = results.nextSolution();
                 String storedPassword = solution.getLiteral("storedPassword").getString();
+                String userId = solution.getResource("user").getLocalName(); // Extract userId
 
-                BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-                // Compare the entered password with the hashed password
-                return passwordEncoder.matches(password, storedPassword);
+                if (passwordEncoder.matches(password, storedPassword)) {
+                    return Optional.of(userId); // Return userId on successful login
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return false;
+        return Optional.empty(); // Return empty if login fails
     }
+
     // Delete a user account by username
     public boolean deleteUser(String username) {
         if (model == null) {
@@ -146,10 +170,19 @@ public class UserService {
             String username = userResource.getProperty(model.getProperty("http://www.semanticweb.org/ahinfo/ontologies/2024/9/untitled-ontology-3#username")).getString();
             String role = userResource.getProperty(model.getProperty("http://www.semanticweb.org/ahinfo/ontologies/2024/9/untitled-ontology-3#role")).getString();
 
+            // Fetch groupId
+            String groupId = userResource.getProperty(model.getProperty("http://www.semanticweb.org/ahinfo/ontologies/2024/9/untitled-ontology-3#groupId")).getString();
+
+            // Retrieve the group name based on groupId
+            Optional<String> groupNameOpt = getGroupNameById(groupId);
+            String groupName = groupNameOpt.orElse("No Group");
+
             Map<String, String> userData = Map.of(
                     "userId", userId,
                     "username", username,
-                    "role", role
+                    "role", role,
+                    "groupId", groupId,
+                    "groupName", groupName
             );
             return Optional.of(userData);
         }
@@ -158,7 +191,6 @@ public class UserService {
     }
 
 
-    // Retrieve all users
     public List<Map<String, String>> getAllUsers() {
         if (model == null) {
             loadRDF();
@@ -166,11 +198,12 @@ public class UserService {
 
         List<Map<String, String>> users = new ArrayList<>();
         String queryString = "PREFIX ontology: <http://www.semanticweb.org/ahinfo/ontologies/2024/9/untitled-ontology-3#> "
-                + "SELECT ?user ?username ?role "
+                + "SELECT ?user ?username ?role ?groupId "
                 + "WHERE { "
                 + "  ?user a ontology:User ; "
                 + "       ontology:username ?username ; "
-                + "       ontology:role ?role . "
+                + "       ontology:role ?role ; "
+                + "       ontology:groupId ?groupId . "
                 + "}";
 
         Query query = QueryFactory.create(queryString);
@@ -181,26 +214,69 @@ public class UserService {
                 String userId = solution.getResource("user").getLocalName();
                 String username = solution.getLiteral("username").getString();
                 String role = solution.getLiteral("role").getString();
+                String groupId = solution.getLiteral("groupId").getString();
+
+                // Retrieve the group name
+                Optional<String> groupNameOpt = getGroupNameById(groupId);
+                String groupName = groupNameOpt.orElse("No Group");
 
                 users.add(Map.of(
                         "userId", userId,
                         "username", username,
-                        "role", role
+                        "role", role,
+                        "groupName", groupName
                 ));
             }
         }
         return users;
     }
 
-    public String generateToken(String username) {
+
+
+
+    public String generateToken(String username,String userId) {
         String SECRET_KEY = "WebSemantique123123AABFAC9985254AABBBWebSemantique123123AABFAC9985254AABBB";
 
         long expirationTime = 1000 * 60 * 60 * 24;
         return Jwts.builder()
                 .setSubject(username)
+                .claim("userId", userId)
                 .setExpiration(new Date(System.currentTimeMillis() + expirationTime))
                 .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
                 .compact();
+    }
+    public Optional<String> getGroupNameById(String groupId) {
+        if (model == null) {
+            loadRDF();
+        }
+
+        String queryString = "PREFIX j0: <http://www.semanticweb.org/ahinfo/ontologies/2024/9/untitled-ontology-3#> "
+                + "SELECT ?hasName "
+                + "WHERE { "
+                + "  j0:" + groupId + " a j0:Group ; "
+                + "       j0:hasName ?hasName . "
+                + "}";
+
+        Query query = QueryFactory.create(queryString);
+        try (QueryExecution qexec = QueryExecutionFactory.create(query, model)) {
+            ResultSet results = qexec.execSelect();
+            if (results.hasNext()) {
+                QuerySolution solution = results.nextSolution();
+                return Optional.of(solution.getLiteral("hasName").getString());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return Optional.empty();
+    }
+    private String getGroupsNameById(String groupId) {
+        // Implement this lookup based on your existing data or a predefined mapping of group IDs to names.
+        Map<String, String> groupMap = Map.of(
+                "901366217470", "BASIC",
+                "937488306806", "VIP",
+                "530828668616", "PREMIUM"
+        );
+        return groupMap.getOrDefault(groupId, "Unknown Group");
     }
 
 }
