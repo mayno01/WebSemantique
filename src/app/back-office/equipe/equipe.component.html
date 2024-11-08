@@ -1,0 +1,96 @@
+<div class="container">
+  <h1 class="text-primary mb-4">Equipes</h1>
+
+  <!-- Display all equipes in a table format -->
+  <div class="card mb-4">
+    <div class="card-header bg-primary text-white">
+      <h2 class="mb-0">All Equipes</h2>
+    </div>
+    <div class="card-body">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Type</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let equipe of equipes">
+            <td>{{ equipe.id }}</td>
+            <td>{{ equipe.type }}</td>
+            <td>
+              <button class="btn btn-danger btn-sm" (click)="deleteEquipe(equipe.id)">
+                <i class="fas fa-trash-alt"></i> Delete
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Add a new equipe with input fields inside a card -->
+  <div class="card mb-4">
+    <div class="card-header bg-success text-white">
+      <h2 class="mb-0">Add New Equipe</h2>
+    </div>
+    <div class="card-body">
+      <div class="form-group">
+        <label for="equipeId">Equipe ID</label>
+        <input
+          type="text"
+          id="equipeId"
+          class="form-control"
+          placeholder="Enter Equipe ID"
+          [(ngModel)]="newEquipe.Equipe_id"
+        />
+      </div>
+      <div class="form-group mt-2">
+        <label for="equipeType">Equipe Type</label>
+        <input
+          type="text"
+          id="equipeType"
+          class="form-control"
+          placeholder="Enter Equipe Type"
+          [(ngModel)]="newEquipe.Equipe_type"
+        />
+      </div>
+      <button class="btn btn-success mt-3" (click)="addEquipe()">
+        <i class="fas fa-plus-circle"></i> Add Equipe
+      </button>
+    </div>
+  </div>
+
+  <!-- Update an existing equipe -->
+  <div class="card mb-4">
+    <div class="card-header bg-warning text-white">
+      <h2 class="mb-0">Update Equipe</h2>
+    </div>
+    <div class="card-body">
+      <div class="form-group">
+        <label for="updateId">Equipe ID to Update</label>
+        <input
+          type="text"
+          id="updateId"
+          class="form-control"
+          placeholder="Enter Equipe ID to Update"
+          [(ngModel)]="selectedEquipeId"
+        />
+      </div>
+      <div class="form-group mt-2">
+        <label for="newEquipeType">New Equipe Type</label>
+        <input
+          type="text"
+          id="newEquipeType"
+          class="form-control"
+          placeholder="Enter New Equipe Type"
+          [(ngModel)]="updateEquipeData.Equipe_type"
+        />
+      </div>
+      <button class="btn btn-warning mt-3" (click)="updateEquipe()">
+        <i class="fas fa-edit"></i> Update Equipe
+      </button>
+    </div>
+  </div>
+</div>

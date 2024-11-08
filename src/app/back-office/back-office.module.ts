@@ -8,7 +8,9 @@ import { BackOfficeRoutingModule } from './back-office-routing.module';
   declarations: [],
   imports: [
     CommonModule,
-    BackOfficeRoutingModule
+    BackOfficeRoutingModule,
+    
+
   ]
 })
 export class BackOfficeModule { }

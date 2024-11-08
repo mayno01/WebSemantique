@@ -23,7 +23,7 @@ export class LoginComponent {
       response => {
         console.log('Login successful', response);
         this.authService.setToken(response); 
-        this.router.navigate(['/home']);
+        this.router.navigate(['/']);
       },
       error => {
         console.error('Login failed', error);

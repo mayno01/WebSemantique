@@ -1,11 +1,12 @@
 import { Component ,OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
+import { RouterLink } from '@angular/router'; 
 import { CommonModule } from '@angular/common'; 
 @Component({
   selector: 'app-all-users',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule,RouterLink],
   templateUrl: './all-users.component.html',
   styleUrls: ['./all-users.component.css']
 })

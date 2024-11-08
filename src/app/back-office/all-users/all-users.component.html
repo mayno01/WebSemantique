@@ -178,6 +178,8 @@
               
                     <th scope="col">Username</th>
                     <th scope="col">Role</th>
+                    <th scope="col">group</th>
+                    <th scope="col">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -185,6 +187,11 @@
                
                     <td>{{ user.username }}</td>
                     <td>{{ user.role }}</td>
+                    <td>{{ user.groupName }}</td>
+                    <td>
+                      <a [routerLink]="['/edit-user', user.userId]" class="btn btn-primary">Edit</a>
+
+
                   </tr>
                 </tbody>
               </table>

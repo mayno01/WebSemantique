@@ -1,14 +1,21 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
+
 
 import { FrontOfficeRoutingModule } from './front-office-routing.module';
 
 
 @NgModule({
-  declarations: [],
+  declarations: [
+
+  ],
   imports: [
     CommonModule,
-    FrontOfficeRoutingModule
+    FrontOfficeRoutingModule,
+    HttpClientModule,
+    FormsModule,
   ]
 })
 export class FrontOfficeModule { }

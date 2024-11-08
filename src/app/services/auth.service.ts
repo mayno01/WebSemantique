@@ -69,6 +69,13 @@ export class AuthService {
     }
     return null;
   }
+  updateUserGroup(userId: string, groupId: string): Observable<any> {
+    const token = this.getToken();
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    const payload = { groupId }; 
+  
+    return this.http.put(`${this.apiUrl}/${userId}/group`, payload , { headers ,responseType: 'text'  } ,);
+  }
   
 
 }
