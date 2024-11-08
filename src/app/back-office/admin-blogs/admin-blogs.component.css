@@ -1,0 +1,131 @@
+.blogs-container {
+  max-width: 800px;
+  margin: auto;
+  padding: 20px;
+}
+
+h2 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.no-blogs {
+  text-align: center;
+  font-size: 18px;
+  color: #888;
+  padding: 20px;
+}
+
+.blog-card {
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.blog-card h3 {
+  color: #007bff;
+  margin-bottom: 8px;
+}
+
+.blog-type {
+  font-size: 14px;
+  color: #555;
+  font-style: italic;
+}
+
+.blog-date {
+  font-size: 12px;
+  color: #999;
+  margin-bottom: 10px;
+}
+
+.blog-content {
+  font-size: 16px;
+  color: #333;
+}
+.button-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+button {
+  /* Optional: Adjust button width or padding if needed */
+  padding: 10px 20px;
+  font-size: 16px;
+}
+.blogs-container {
+  padding: 2rem;
+}
+
+.blog-card {
+  background: #fff;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.blog-card h3 {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+}
+
+.blog-card .blog-type {
+  font-style: italic;
+  color: #777;
+}
+
+.blog-card .blog-date {
+  color: #aaa;
+}
+
+.blog-card .blog-content {
+  margin-top: 15px;
+  line-height: 1.6;
+  font-size: 1.1rem;
+}
+
+.button-group {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.comments-section {
+  margin-top: 20px;
+}
+
+.comment-item {
+  background-color: #f9f9f9;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+.comment-item .comment-content {
+  font-size: 1rem;
+  color: #333;
+}
+
+.comment-item .comment-date {
+  font-size: 0.85rem;
+  color: #777;
+  margin-top: 5px;
+}
+
+.comment-form {
+  margin-top: 15px;
+}
+
+.comment-form textarea {
+  resize: none;
+}
+
+.comment-form button {
+  width: 100%;
+}
