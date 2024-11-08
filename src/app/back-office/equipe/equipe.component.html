@@ -1,0 +1,47 @@
+<div>
+  <h1>Equipes</h1>
+
+  <!-- Display all equipes -->
+  <div *ngIf="equipes && equipes.length > 0">
+    <h2>All Equipes</h2>
+    <ul>
+      <li *ngFor="let equipe of equipes">
+        <!-- Display each property of equipe -->
+        ID: {{ equipe.id }}, Type: {{ equipe.type }}
+        <button (click)="deleteEquipe(equipe.id)">Delete</button>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Add a new equipe -->
+  <div>
+    <h2>Add New Equipe</h2>
+    <input
+      type="text"
+      placeholder="Equipe ID"
+      [(ngModel)]="newEquipe.Equipe_id"
+    />
+    <input
+      type="text"
+      placeholder="Equipe Type"
+      [(ngModel)]="newEquipe.Equipe_type"
+    />
+    <button (click)="addEquipe()">Add Equipe</button>
+  </div>
+
+  <!-- Update an existing equipe -->
+  <div>
+    <h2>Update Equipe</h2>
+    <input
+      type="text"
+      placeholder="Equipe ID to Update"
+      [(ngModel)]="selectedEquipeId"
+    />
+    <input
+      type="text"
+      placeholder="New Equipe Type"
+      [(ngModel)]="updateEquipeData.Equipe_type"
+    />
+    <button (click)="updateEquipe()">Update Equipe</button>
+  </div>
+</div>

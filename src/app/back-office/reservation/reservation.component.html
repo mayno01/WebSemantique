@@ -1,0 +1,37 @@
+<div>
+  <h1>Reservations</h1>
+
+  <!-- Display all reservations -->
+  <div *ngIf="reservations && reservations.length > 0">
+    <h2>All Reservations</h2>
+    <ul>
+      <li *ngFor="let reservation of reservations">
+        ID: {{ reservation.id }}, Type: {{ reservation.type }}, Date: {{ reservation.date }},
+        Description: {{ reservation.description }}, Feedback: {{ reservation.feedback }}
+        <button (click)="deleteReservation(reservation.id)">Delete</button>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Add a new reservation -->
+  <div>
+    <h2>Add New Reservation</h2>
+    <input type="text" placeholder="Reservation ID" [(ngModel)]="newReservation.Reservation_id" />
+    <input type="text" placeholder="Reservation Type" [(ngModel)]="newReservation.Reservation_type" />
+    <input type="text" placeholder="Reservation Date" [(ngModel)]="newReservation.Reservation_date" />
+    <input type="text" placeholder="Reservation Description" [(ngModel)]="newReservation.Reservation_description" />
+    <input type="text" placeholder="Reservation Feedback" [(ngModel)]="newReservation.Reservation_feedback" />
+    <button (click)="addReservation()">Add Reservation</button>
+  </div>
+
+  <!-- Update an existing reservation -->
+  <div>
+    <h2>Update Reservation</h2>
+    <input type="text" placeholder="Reservation ID to Update" [(ngModel)]="selectedReservationId" />
+    <input type="text" placeholder="New Reservation Type" [(ngModel)]="updateReservationData.Reservation_type" />
+    <input type="text" placeholder="New Reservation Date" [(ngModel)]="updateReservationData.Reservation_date" />
+    <input type="text" placeholder="New Reservation Description" [(ngModel)]="updateReservationData.Reservation_description" />
+    <input type="text" placeholder="New Reservation Feedback" [(ngModel)]="updateReservationData.Reservation_feedback" />
+    <button (click)="updateReservation()">Update Reservation</button>
+  </div>
+</div>
